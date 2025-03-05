@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animated House with Cyclic Stars, Planet, and Flying Rocket</title>
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            background-color: black;
+            overflow: hidden;
+            position: relative;
+        }
+
+        svg {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .house {
+            fill: rgb(131, 33, 33);
+        }
+
+        .roof {
+            fill: #3f4658;
+        }
+
+        .chimney {
+            fill: #7c7b91;
+        }
+
+        .window {
+            fill: #222731;
+            stroke: white;
+            stroke-width: 3;
+        }
+
+        .door {
+            fill: #7c7b91;
+            stroke: white;
+            stroke-width: 3;
+        }
+
+        .door-knob {
+            fill: black;
+        }
+
+        /* Cyclic star animation */
+        .star {
+            fill: white;
+            animation: moveStar linear infinite;
+        }
+
+        @keyframes moveStar {
+            0% {
+                transform: translateX(-100vw) translateY(-100vh);
+                opacity: 1;
+            }
+            50% {
+                transform: translateX(100vw) translateY(100vh);
+                opacity: 0.7;
+            }
+            100% {
+                transform: translateX(-100vw) translateY(-100vh);
+                opacity: 1;
+            }
+        }
+
+        .planet {
+            fill: url(#planet-gradient);
+        }
+
+        /* Rocket Animation */
+        .rocket {
+            animation: moveRocket 10s linear infinite;
+        }
+
+        /* Rocket animation keyframes */
+        @keyframes moveRocket {
+            0% {
+                transform: translateX(100vw) translateY(100vh);
+            }
+            50% {
+                transform: translateX(50vw) translateY(-50vh);
+            }
+            100% {
+                transform: translateX(-100vw) translateY(100vh);
+            }
+        }
+    </style>
+</head>
+<body>
+    <svg xmlns="http://www.w3.org/2000/svg">
+        <g class="stars"></g>
+
+        <defs>
+            <!-- Radial Gradient for Planet -->
+            <radialGradient id="planet-gradient" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+                <stop offset="0%" style="stop-color: #ffffff; stop-opacity: 0.8" />
+                <stop offset="100%" style="stop-color: #063e5e; stop-opacity: 1" />
+            </radialGradient>
+        </defs>
+
+        <!-- Planet -->
+        <circle class="planet" cx="200" cy="700" r="600"></circle>
+
+        <!-- House -->
+        <rect class="house" x="150" y="250" width="200" height="200"></rect>
+
+        <!-- Roof -->
+        <polygon class="roof" points="150,250 250,150 350,250"></polygon>
+
+        <!-- Chimney -->
+        <rect class="chimney" x="270" y="170" width="30" height="50"></rect>
+
+        <!-- Window -->
+        <rect class="window" x="190" y="290" width="50" height="60"></rect>
+
+        <!-- Door -->
+        <rect class="door" x="280" y="350" width="50" height="100"></rect>
+        <circle class="door-knob" cx="285" cy="400" r="5"></circle>
+
+        <!-- Rocket -->
+        <g class="rocket">
+            <!-- Rocket body -->
+            <rect x="50" y="500" width="20" height="60" rx="10" fill="silver" />
+            <!-- Rocket top -->
+            <polygon points="50,500 60,470 70,500" fill="red" />
+            <!-- Rocket fins -->
+            <polygon points="50,560 45,580 55,580" fill="blue" />
+            <polygon points="70,560 75,580 65,580" fill="blue" />
+            <!-- Rocket exhaust -->
+            <polygon points="55,560 65,560 60,590" fill="orange" />
+        </g>
+    </svg>
+
+    <script>
+        // Function to create random stars in the SVG
+        function createStars(numStars) {
+            const starGroup = document.querySelector('.stars');
+            for (let i = 0; i < numStars; i++) {
+                const star = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                const x = Math.random() * 100;  // Random x position (0-100%)
+                const y = Math.random() * 100;  // Random y position (0-100%)
+                const radius = Math.random() * 1.5 + 0.5;  // Random size for stars
+
+                star.setAttribute('cx', `${x}vw`);
+                star.setAttribute('cy', `${y}vh`);
+                star.setAttribute('r', radius);
+                star.classList.add('star');
+
+                // Randomize the animation duration between 7s and 15s for each star
+                const duration = Math.random() * (15 - 7) + 7;  // Between 7s and 15s
+                star.style.animationDuration = `${duration}s`;
+
+                starGroup.appendChild(star);
+            }
+        }
+
+        // Generate 1000 stars on the screen
+        createStars(1000);
+    </script>
+</body>
+</html>
